@@ -19,10 +19,16 @@ const solanaJSON = {
 		return user;
 	},
 
+	loadUser: async (privateKeyBufferArray) => {
+		const user = new solanaWeb3.Account(privateKeyBufferArray);
+		console.log(`Loaded solana account: ${user.publicKey}`);
+		return user;
+	},
+
 	fundUser: async (connection,account) => {
-		console.log(`Requesting airdrop funds...`);
+		console.log(`Requesting airdrop funds... (this will take 30 seconds)`);
 		const res = await connection.requestAirdrop(account.publicKey, 10000000000); // 1 SOL = 1,000,000,000 LAMPORTS
-		await new Promise(r => setTimeout(r, 20000));
+		await new Promise(r => setTimeout(r, 30000));
 		const lamports = await connection.getBalance(account.publicKey);
 		console.log(`Payer account ${account.publicKey.toBase58()} containing ${(lamports / 1000000000).toFixed(2)}SOL`);
 	},
