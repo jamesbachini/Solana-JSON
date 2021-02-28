@@ -89,7 +89,7 @@ const solanaJSON = {
 		return confirmation;
 	},
 
-	pullJSON:async (connection,appPubKey) => {
+	pullJSON: async (connection,appPubKey) => {
 		const accountInfo = await connection.getAccountInfo(appPubKey);
 		return Buffer.from(accountInfo.data).toString().substr(4,1000).trim();
 	},
