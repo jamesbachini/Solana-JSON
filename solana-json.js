@@ -8,8 +8,9 @@ const BufferLayout = require('buffer-layout');
 
 const solanaJSON = {
 
-	setupConnection: (network='https://testnet.solana.com') => {
-		return new solanaWeb3.Connection(network);
+	setupConnection: (network) => {
+		const connection = new solanaWeb3.Connection(network);
+		return connection;
 	},
 
 	createUser: async () => {
@@ -19,10 +20,16 @@ const solanaJSON = {
 	},
 
 	fundUser: async (connection,account) => {
+		console.log(`Requesting airdrop funds...`);
 		const res = await connection.requestAirdrop(account.publicKey, 10000000000); // 1 SOL = 1,000,000,000 LAMPORTS
-		await new Promise(r => setTimeout(r, 10000));
+		await new Promise(r => setTimeout(r, 20000));
 		const lamports = await connection.getBalance(account.publicKey);
 		console.log(`Payer account ${account.publicKey.toBase58()} containing ${(lamports / 1000000000).toFixed(2)}SOL`);
+	},
+
+	setDataStructure: (characterLength) => {
+		const structure = BufferLayout.struct([BufferLayout.blob(characterLength,'txt')]);
+		return structure;
 	},
 
 	loadProgram: async (connection,smartContract,payerAccount) => {
@@ -95,23 +102,21 @@ const solanaJSON = {
 	},
 
 	deploy: async () => {
-		const connection = setupConnection('https://testnet.solana.com');
-		const version = await connection.getVersion();
-		console.log('Connection to cluster established:', version);
-		const payerAccount = await createUser();
-		await fundUser(connection,payerAccount);
+		console.log('deploying...');
+		const connection = solanaJSON.setupConnection('https://testnet.solana.com');
+		const payerAccount = await solanaJSON.createUser();
+		await solanaJSON.fundUser(connection,payerAccount);
 		const smartContract = {
 			pathToProgram: './solana-json.so',
-			dataLayout: BufferLayout.struct([BufferLayout.blob(1000,'txt')]),
+			dataLayout: solanaJSON.setDataStructure(1000),
 		}
-		const app = await loadProgram(connection,smartContract,payerAccount);
+		const app = await solanaJSON.loadProgram(connection,smartContract,payerAccount);
 		console.log('app',app);
-		const confirmationTicket = await pushJSON(connection,app,'{"abc":123}');
-		const testJSON = pullJSON(connection,app.appAccount.publicKey);
+		const confirmationTicket = await solanaJSON.pushJSON(connection,app,'{"abc":123}');
+		const testJSON = solanaJSON.pullJSON(connection,app.appAccount.publicKey);
 		console.log(`Test: ${JSON.parse(testJSON).abc}`);
-		return app;
 	},
 
 }
 
-export default solanaJSON;
+module.exports = solanaJSON;
