@@ -4,7 +4,7 @@
 
 This library uses a smart contract located at solana-json.so to store text based data such as JSON on the Solana blockchain. An app is deployed with a set amount of storage 1000 characters as standard. JSON data can then be pushed as a text string to the Solana blockchain and easily retrieved just using the public key of the app account.
 
-Note there is currently no security in place so any user can write and edit data stored. To change this set paramters in the smart contract, the source code for which is located in solana-json.rs
+*Note there is currently no security in place so any user can write and edit data stored. To change this set paramters in the smart contract, the source code for which is located in solana-json.rs*
 
 # Testnet Example
 This code exaple will set up a connection to the Solana testnet, create a user and request airdrop funding. It will then deploy the contract to testnet and push and pull example JSON data to the contract.
@@ -53,7 +53,7 @@ https://jamesbachini.com/
 If anyone would like to add code to the project please do so via a pull request.
 
 # To Do
-Easy way to adjust data size
-Add secure data option on smartcontract
-Test random data such as unicode in json
-Audit smartcontract
+- Easy way to adjust data size
+- Add secure data option on smartcontract
+- Test random data such as unicode in json
+- Audit smartcontract
