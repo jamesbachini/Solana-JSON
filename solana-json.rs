@@ -46,9 +46,7 @@ fn entry(
 			ProgramError::InvalidInstructionData
 	})?;
 	//msg!("Memo (len {})", memo.to_string().len());
-
-	// line needed here to add memo to unpacked data
-	//unpacked.txt = memo.to_string();
+	
 	let mut iter = memo.chars();
 	//iter.by_ref().nth(4);
 	let mut slice = iter.as_str();

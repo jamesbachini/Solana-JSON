@@ -6,7 +6,8 @@ This library uses a smart contract located at solana-json.so to store text based
 
 Note there is currently no security in place so any user can write and edit data stored. To change this set paramters in the smart contract, the source code for which is located in solana-json.rs
 
-# Example
+# Testnet Example
+This code exaple will set up a connection to the Solana testnet, create a user and request airdrop funding. It will then deploy the contract to testnet and push and pull example JSON data to the contract.
 ```
 const solanaJSON = require('./solana-json.js');
 
@@ -25,6 +26,13 @@ const solanaJSON = require('./solana-json.js');
   const testJSON = solanaJSON.pullJSON(connection,app.appAccount.publicKey);
   console.log(`Test: ${JSON.parse(testJSON).abc}`);
 })();
+```
+
+# Deploying Mainnet
+
+To deploy the contract on mainnet you'll need an account with some SOL tokens to pay for the transactions. You can load a user account using a private key buffer array.
+```
+const payerAccount = solanaJSON.loadUser([1,185,72,49,215,81,171,50,85,54,122,53,24,248,3,221,42,85,82,43,128,80,215,127,68,99,172,141,116,237,232,85,185,31,141,73,173,222,173,174,4,212,0,104,157,80,63,147,21,81,140,201,113,76,156,161,154,92,70,67,163,52,219,72]);
 ```
 
 # Resources
