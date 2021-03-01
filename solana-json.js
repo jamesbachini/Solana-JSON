@@ -28,9 +28,13 @@ const solanaJSON = {
 	fundUser: async (connection,account) => {
 		console.log(`Requesting airdrop funds... (this will take 30 seconds)`);
 		const res = await connection.requestAirdrop(account.publicKey, 10000000000); // 1 SOL = 1,000,000,000 LAMPORTS
-		await new Promise(r => setTimeout(r, 30000));
-		const lamports = await connection.getBalance(account.publicKey);
-		console.log(`Payer account ${account.publicKey.toBase58()} containing ${(lamports / 1000000000).toFixed(2)}SOL`);
+		let lamports = 0;
+		for (let breakCount = 0; breakCount < 100; breakCount+=10) {
+			await new Promise(r => setTimeout(r, 10000));
+			lamports = await connection.getBalance(account.publicKey);
+			console.log(`Payer account ${account.publicKey.toBase58()} containing ${(lamports / 1000000000).toFixed(2)}SOL`);
+			if (lamports > 1) breakCount = 100;
+		}
 	},
 
 	setDataStructure: (characterLength) => {
@@ -50,7 +54,7 @@ const solanaJSON = {
 			data,
 			solanaWeb3.BPF_LOADER_PROGRAM_ID,
 		);
-		programId = programAccount.publicKey;
+		const programId = programAccount.publicKey;
 		console.log('Program loaded to account', programId.toBase58());
 
 		// Create the app account
@@ -59,7 +63,7 @@ const solanaJSON = {
 		console.log('Creating app account', appPubkey.toBase58());
 		const space = smartContract.dataLayout.span;
 		const lamports = 10000000000;
-		console.log(`Lamports required ${lamports}`);
+		console.log(`Transferring ${(lamports/1000000000).toFixed(4)}SOL`);
 		const transaction = new solanaWeb3.Transaction().add(
 			solanaWeb3.SystemProgram.createAccount({
 				fromPubkey: payerAccount.publicKey,
