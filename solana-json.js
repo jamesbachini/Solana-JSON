@@ -1,6 +1,5 @@
 /*
 	Solana JSON module for storing and retrieving data from the Solana blockchain
-
 */
 const solanaWeb3 = require('@solana/web3.js');
 const fs = require('fs').promises;
@@ -62,7 +61,7 @@ const solanaJSON = {
 		const appPubkey = appAccount.publicKey;
 		console.log('Creating app account', appPubkey.toBase58());
 		const space = smartContract.dataLayout.span;
-		const lamports = 10000000000;
+		const lamports = 1000000000;
 		console.log(`Transferring ${(lamports/1000000000).toFixed(4)}SOL`);
 		const transaction = new solanaWeb3.Transaction().add(
 			solanaWeb3.SystemProgram.createAccount({

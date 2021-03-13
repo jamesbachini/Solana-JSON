@@ -39,16 +39,13 @@ fn entry(
 
 	let mut data = account.try_borrow_mut_data()?;
 	let mut unpacked = Message::unpack(&data).expect("Failed to read data");
-	//msg!("unpacked ${:?}",unpacked);
 
 	let mut memo = String::from_utf8(instruction_data.to_vec()).map_err(|err| {
 			msg!("Invalid UTF-8, from byte {}");
 			ProgramError::InvalidInstructionData
 	})?;
-	//msg!("Memo (len {})", memo.to_string().len());
 	
 	let mut iter = memo.chars();
-	//iter.by_ref().nth(4);
 	let mut slice = iter.as_str();
 	let mut txtFinal = String::from(slice);
 	txtFinal.truncate(996);
