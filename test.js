@@ -2,7 +2,7 @@ const solanaJSON = require('./solana-json.js');
 
 (async() => {
 		console.log('deploying...');
-		const connection = solanaJSON.setupConnection('https://testnet.solana.com');
+		const connection = solanaJSON.setupConnection('https://devnet.solana.com');
 		const payerAccount = await solanaJSON.createUser();
 		await solanaJSON.fundUser(connection,payerAccount);
 		const smartContract = {
